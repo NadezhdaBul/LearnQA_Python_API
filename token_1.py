@@ -21,7 +21,7 @@ time.sleep(v)
 
 response_2 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job", params={'token':f"{tok}"})
 
-assert response_2.text.__contains__('result')
-assert response_2.text.__contains__(str('"status":"Job is ready"'))
+assert response_2.text.__contains__('result') == True
+assert response_2.text.__contains__(str('"status":"Job is ready"')) == True
 
 print("Кейс пройден успешно")
