@@ -8,10 +8,9 @@ resp = response.json()
 for k, v in resp.items():
     if k == "token":
         tok = v
-        # print(tok)
+
     else:
         sec = v
-        # print(sec)
 
 
 response_1 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job", params={'token': f"{tok}"})
