@@ -15,7 +15,7 @@ for k, v in resp.items():
 
 response_1 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job", params={'token': f"{tok}"})
 assert response_1.text == '{"status":"Job is NOT ready"}'
-# print(response_2.text)
+
 
 time.sleep(v)
 
