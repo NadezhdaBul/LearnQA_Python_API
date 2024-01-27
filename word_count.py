@@ -1,6 +1,6 @@
 import pytest
 import requests
-# phrase = input("Set a phrase: ")
+
 class TestWordcount:
     def test_word_count(some):
         phrase = input("Set a phrase: ")
