@@ -44,7 +44,7 @@ class Assertions:
         except json.JSONDecodeError:
             assert False, f"Response is not in JSON format. response text is '{response.text}'"
         for name in names:
-            assert name in response_as_dict, f"Response JSON shouldn`t have key '{name}. But it is present'"
+            assert name not in response_as_dict, f"Response JSON shouldn`t have key '{name}. But it is present'"
 
     @staticmethod
     def assert_code_status(response: Response, expected_status_code):
