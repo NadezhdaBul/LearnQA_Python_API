@@ -78,7 +78,9 @@ class TestUserEdit(BaseCase):
                                  headers={'x-csrf-token': token},
                                  cookies={'auth_sid': auth_sid})
 
-        Assertions.assert_json_value_not_expected_name(response2_3, 'firstName', new_name, "Attention! The name has been changed")
+        Assertions.assert_code_status(response2_3, 200)
+        assert "firstName" in response2_3.json(), f"No 'firstName' in response2_3"
+        Assertions.assert_json_value_not_expected_name(response2_3, 'firstName', new_name, "Attention! The user firstName has been changed")
 
 #
     def test_edit_email_invalid_format(self):
