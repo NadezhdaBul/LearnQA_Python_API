@@ -4,6 +4,8 @@ from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 class TestUserEdit(BaseCase):
+
+
     #REGISTER
     # def test_edit_just_created_user(self):
     #     register_data = self.prepare_registration_data()
@@ -47,16 +49,17 @@ class TestUserEdit(BaseCase):
     #     Assertions.assert_json_value_by_name(response1_4, 'firstName', new_name, "Wrong name of the user after edit")
     #
 
-    def test_edit_not_authorized_user_negative(self):
-        email = 'learnqa02072024210315@example.com'
-        password = '123'
+    def setup_method(self):
+        self.email = 'learnqa02072024210315@example.com'
+        self.password = '123'
 
-        # LOGIN
-        login_data = {
-            'email': email,
-            'password': password
+        self.login_data = {
+            'email': self.email,
+            'password': self.password
         }
-        response2_1 = requests.post('https://playground.learnqa.ru/api/user/login', data=login_data)
+    def test_edit_not_authorized_user_negative(self):
+        #LOGIN
+        response2_1 = requests.post('https://playground.learnqa.ru/api/user/login', data=self.login_data)
         auth_sid = self.get_cookie(response2_1, 'auth_sid')
         token = self.get_header(response2_1, 'x-csrf-token')
         user_id = self.get_json_value(response2_1, 'user_id')
@@ -79,15 +82,8 @@ class TestUserEdit(BaseCase):
 
 #
     def test_edit_email_invalid_format(self):
-        email = 'learnqa02072024210315@example.com'
-        password = '123'
-
-        # LOGIN
-        login_data = {
-            'email': email,
-            'password': password
-        }
-        response3_1 = requests.post('https://playground.learnqa.ru/api/user/login', data=login_data)
+       #LOGIN
+        response3_1 = requests.post('https://playground.learnqa.ru/api/user/login', data=self.login_data)
         auth_sid = self.get_cookie(response3_1, 'auth_sid')
         token = self.get_header(response3_1, 'x-csrf-token')
         user_id = self.get_json_value(response3_1, 'user_id')
@@ -114,4 +110,31 @@ class TestUserEdit(BaseCase):
         assert response3_3.json()["email"] != new_email, "Attention! The name has been changed"
 
 
+    def test_edit_firstname_invalid_format(self):
+        # LOGIN
+        response4_1 = requests.post('https://playground.learnqa.ru/api/user/login', data=self.login_data)
+        auth_sid = self.get_cookie(response4_1, 'auth_sid')
+        token = self.get_header(response4_1, 'x-csrf-token')
+        user_id = self.get_json_value(response4_1, 'user_id')
+
+        Assertions.assert_code_status(response4_1, 200)
+
+        # EDIT
+        new_firstName = 'y'
+        response4_2 = requests.put(f"https://playground.learnqa.ru/api/user/{user_id}",
+                                   headers={'x-csrf-token': token},
+                                   cookies={'auth_sid': auth_sid},
+                                   data={'firstName': new_firstName})
+
+        Assertions.assert_code_status(response4_2, 400)
+        assert response4_2.content.decode('utf-8') == '{"error":"Too short value for field firstName"}', f"Unexpected response content {response4_2.content}"
+
+        # GET
+        response4_3 = requests.get(f"https://playground.learnqa.ru/api/user/{user_id}",
+                                   headers={'x-csrf-token': token},
+                                   cookies={'auth_sid': auth_sid})
+
+        Assertions.assert_code_status(response4_3, 200)
+        assert "firstName" in response4_3.json(), f"No 'firstName' in response4_3"
+        assert response4_3.json()["firstName"] != new_firstName, "Attention! The firstName has been changed"
 
