@@ -96,11 +96,13 @@ class TestUserEdit(BaseCase):
         # EDIT
         new_email = 'ChangedEmailyandexru'
         response3_2 = requests.put(f"https://playground.learnqa.ru/api/user/{user_id}",
+                                   headers={'x-csrf-token': token},
+                                   cookies={'auth_sid': auth_sid},
                                    data={'email': new_email})
 
+
         Assertions.assert_code_status(response3_2, 400)
-        assert response3_2.content.decode(
-            'utf-8') == "Auth token not supplied", f"Unexpected response content {response3_2.content}"
+        assert response3_2.content.decode('utf-8') == "Invalid email format", f"Unexpected response content {response3_2.content}"
 
         # GET
         response3_3 = requests.get(f"https://playground.learnqa.ru/api/user/{user_id}",
