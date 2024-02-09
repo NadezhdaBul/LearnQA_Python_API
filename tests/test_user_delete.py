@@ -1,8 +1,15 @@
 import requests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
+import allure
 
+@allure.epic("User deleting cases")
+@allure.issue('https://playground.learnqa.ru')
 class TestUserDelete(BaseCase):
+
+    @allure.severity("normal")
+    @allure.title("test_delete_user_number_2")
+    @allure.testcase("SWT-9001")
     def test_delete_user_number_2(self):
         #LOGIN
         login_data = {
@@ -35,6 +42,9 @@ class TestUserDelete(BaseCase):
         Assertions.assert_json_has_keys(response1_3, expected_fields)
         assert response1_3.json()['id'] == '2', "Wrong user id info"
 
+    @allure.severity("normal")
+    @allure.title("test_delete_just_created_user")
+    @allure.testcase("SWT-9002")
     def test_delete_just_created_user(self):
         #REGISTER
 
@@ -76,7 +86,10 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response2_3, 404)
         assert response2_3.content.decode('utf-8') == 'User not found', f"The user {user_id} has not been deleted"
 
-
+    @allure.severity("normal")
+    @allure.epic("FLACKY test")
+    @allure.title("test_delete_other_user")
+    @allure.testcase("SWT-9004")
     def test_delete_other_user(self):
         # REGISTER
 
